@@ -1,0 +1,11 @@
+Source Table,Source Column,Logic,Target Table,Target Column,Data Type,Source Data Type
+INT_CAP_SAT,account_id,Direct,ACCESS_ENRICH_ACCT,account_id,STRING,STRING
+INT_CAP_SAT,access_time,Direct,ACCESS_ENRICH_ACCT,access_timestamp,TIMESTAMP,TIMESTAMP
+INT_CAP_SAT,channel_code,Map using channel_mapping,ACCESS_ENRICH_ACCT,access_channel,STRING,STRING
+INT_CAP_SAT,status,Direct,ACCESS_ENRICH_ACCT,account_status,STRING,STRING
+INT_CAP_SAT,customer_id,Direct,ACCESS_ENRICH_ACCT,customer_id,STRING,STRING
+INT_CAP_SAT,segment_code,Join with customer_profile,ACCESS_ENRICH_ACCT,customer_segment,STRING,STRING
+INT_CAP_SAT,product_code,Join with product_catalog,ACCESS_ENRICH_ACCT,product_type,STRING,STRING
+INT_CAP_SAT,login_count,>10 logins in 1 hour → suspicious_access,ACCESS_ENRICH_ACCT,suspicious_access,BOOLEAN,BOOLEAN
+INT_CAP_SAT,balance,balance > 100K and segment = 'HNI',ACCESS_ENRICH_ACCT,high_value_customer,BOOLEAN,BOOLEAN
+INT_CAP_SAT,geo_location,,ACCESS_ENRICH_ACCT,geo_location,STRING,STRING
