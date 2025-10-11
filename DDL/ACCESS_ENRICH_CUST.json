@@ -1,0 +1,117 @@
+[
+    {
+        "name": "CUST_ID",
+        "type": "VARCHAR",
+        "description": "Unique identifier for customer"
+    },
+    {
+        "name": "CUST_NAME",
+        "type": "VARCHAR",
+        "description": "Full name of the customer"
+    },
+    {
+        "name": "CUST_TYPE",
+        "type": "VARCHAR",
+        "description": "Type of customer"
+    },
+    {
+        "name": "EMAIL",
+        "type": "VARCHAR",
+        "description": "Email address of the customer"
+    },
+    {
+        "name": "PHONE",
+        "type": "VARCHAR",
+        "description": "Phone number of the customer"
+    },
+    {
+        "name": "ADDR_ID",
+        "type": "VARCHAR",
+        "description": "Address identifier"
+    },
+    {
+        "name": "ADDR_TYPE",
+        "type": "VARCHAR",
+        "description": "Type of address (e.g., Residential, Mailing)"
+    },
+    {
+        "name": "STREET",
+        "type": "VARCHAR",
+        "description": "Street name of the address"
+    },
+    {
+        "name": "CITY",
+        "type": "VARCHAR",
+        "description": "City name of the address"
+    },
+    {
+        "name": "STATE",
+        "type": "VARCHAR",
+        "description": "State code of the address"
+    },
+    {
+        "name": "POSTCODE",
+        "type": "VARCHAR",
+        "description": "Postal code of the address"
+    },
+    {
+        "name": "COUNTRY",
+        "type": "VARCHAR",
+        "description": "Country name of the address"
+    },
+    {
+        "name": "IS_PRIMARY_ADDR",
+        "type": "BOOLEAN",
+        "description": "Flag indicating if this is the primary address"
+    },
+    {
+        "name": "ADDR_EFFECTIVE_DATE",
+        "type": "DATE",
+        "description": "Date when address became active"
+    },
+    {
+        "name": "ADDR_END_DATE",
+        "type": "DATE",
+        "description": "Date when address was deactivated"
+    },
+    {
+        "name": "RECORD_SOURCE",
+        "type": "VARCHAR",
+        "description": "Static value indicating source of record"
+    },
+    {
+        "name": "LOAD_DATE",
+        "type": "DATE",
+        "description": "Timestamp of ETL load"
+    },
+    {
+        "name": "SOURCE_EFFECTIVE_FROM_DTTM",
+        "type": "DATETIME",
+        "description": "Source system effective from timestamp"
+    },
+    {
+        "name": "SOURCE_EFFECTIVE_TO_DTTM",
+        "type": "DATETIME",
+        "description": "Source system effective to timestamp"
+    },
+    {
+        "name": "RDH_EFFECTIVE_FROM_DTTM",
+        "type": "DATETIME",
+        "description": "RDH effective from timestamp"
+    },
+    {
+        "name": "RDH_EFFECTIVE_TO_DTTM",
+        "type": "DATETIME",
+        "description": "RDH effective to timestamp"
+    },
+    {
+        "name": "SOURCE_COUNTRY",
+        "type": "VARCHAR",
+        "description": "Source country of the customer record"
+    },
+    {
+        "name": "RDH_LOAD_DTTM",
+        "type": "DATETIME",
+        "description": "Timestamp when record was loaded into RDH"
+    }
+]
