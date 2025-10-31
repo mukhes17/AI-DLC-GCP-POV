@@ -1,0 +1,66 @@
+{
+  "tableName": "ACCESS_ENRICH_ACCT",
+  "schema": [
+    {
+      "name": "account_id",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Unique identifier for the account."
+    },
+    {
+      "name": "access_timestamp",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "Timestamp of the access event."
+    },
+    {
+      "name": "access_channel",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "The channel through which the access was made (e.g., 'Mobile', 'Web')."
+    },
+    {
+      "name": "account_status",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "The status of the account at the time of access."
+    },
+    {
+      "name": "customer_id",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Unique identifier for the customer associated with the account."
+    },
+    {
+      "name": "customer_segment",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "The segment the customer belongs to (e.g., 'Retail', 'HNI')."
+    },
+    {
+      "name": "product_type",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "The type of product associated with the account."
+    },
+    {
+      "name": "suspicious_access",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Flag to indicate if the access is considered suspicious."
+    },
+    {
+      "name": "high_value_customer",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Flag to indicate if the customer is a high-value customer."
+    },
+    {
+      "name": "geo_location",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Geographical location of the access event."
+    }
+  ],
+  "description": "Enriched table containing customer access information with derived attributes."
+}

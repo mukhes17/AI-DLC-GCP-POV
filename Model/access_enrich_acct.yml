@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: access_enrich_acct
+    description: "Enriched account access events, flagging suspicious activity and high-value customers."
+    columns:
+      - name: account_id
+        description: "The unique identifier for the account."
+        tests:
+          - not_null
+      - name: access_timestamp
+        description: "The timestamp of the access event."
+        tests:
+          - not_null
+      - name: access_channel
+        tests:
+          - accepted_values:
+              values: ['Web', 'Mobile', 'Unknown']
+    tests:
+      - dbt_utils.at_least_one
+
+    # Unit tests to verify the transformation logic within the model
+    unit_tests:
+      - name: test_web_channel_and_not_suspicious
+        description: "Tests if channel_code '01' maps to 'Web' and login_count <= 10 is not suspicious."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_101', access_time: '2023-01-15T10:00:00Z', channel_code: '01', status: 'Active', customer_id: 'cust_1', segment_code: 'Retail', product_code: 'P01', login_count: 5, balance: 50000, geo_location: 'US'}
+        expect:
+          rows:
+            - {access_channel: 'Web', suspicious_access: false, high_value_customer: false, account_id: 'acc_101'}
+
+      - name: test_mobile_channel_and_suspicious_access
+        description: "Tests if channel_code '02' maps to 'Mobile' and login_count > 10 is flagged as suspicious."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_102', access_time: '2023-01-15T11:00:00Z', channel_code: '02', status: 'Active', customer_id: 'cust_2', segment_code: 'Retail', product_code: 'P02', login_count: 12, balance: 20000, geo_location: 'CA'}
+        expect:
+          rows:
+            - {access_channel: 'Mobile', suspicious_access: true, high_value_customer: false, account_id: 'acc_102'}
+
+      - name: test_unknown_channel
+        description: "Tests if an unmapped channel_code defaults to 'Unknown'."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_103', access_time: '2023-01-15T12:00:00Z', channel_code: '99', status: 'Active', customer_id: 'cust_3', segment_code: 'SME', product_code: 'P03', login_count: 2, balance: 75000, geo_location: 'UK'}
+        expect:
+          rows:
+            - {access_channel: 'Unknown', suspicious_access: false, high_value_customer: false, account_id: 'acc_103'}
+
+      - name: test_high_value_customer_flag
+        description: "Tests if a balance > 100k and segment 'HNI' is flagged as high value."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_104', access_time: '2023-01-15T13:00:00Z', channel_code: '01', status: 'Active', customer_id: 'cust_4', segment_code: 'HNI', product_code: 'P04', login_count: 3, balance: 150000, geo_location: 'AU'}
+        expect:
+          rows:
+            - {access_channel: 'Web', suspicious_access: false, high_value_customer: true, account_id: 'acc_104'}
+
+      - name: test_high_value_customer_false_due_to_balance
+        description: "Tests if a 'HNI' customer with balance <= 100k is NOT flagged as high value."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_105', access_time: '2023-01-15T14:00:00Z', channel_code: '01', status: 'Active', customer_id: 'cust_5', segment_code: 'HNI', product_code: 'P05', login_count: 1, balance: 99000, geo_location: 'SG'}
+        expect:
+          rows:
+            - {access_channel: 'Web', suspicious_access: false, high_value_customer: false, account_id: 'acc_105'}
+
+      - name: test_high_value_customer_false_due_to_segment
+        description: "Tests if a non-'HNI' customer with balance > 100k is NOT flagged as high value."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_106', access_time: '2023-01-15T15:00:00Z', channel_code: '02', status: 'Active', customer_id: 'cust_6', segment_code: 'Retail', product_code: 'P06', login_count: 4, balance: 200000, geo_location: 'JP'}
+        expect:
+          rows:
+            - {access_channel: 'Mobile', suspicious_access: false, high_value_customer: false, account_id: 'acc_106'}
+
+      - name: test_all_flags_true
+        description: "Tests a scenario where both suspicious_access and high_value_customer are true."
+        given:
+          - input: ref('int_cap_sat')
+            rows:
+              - {account_id: 'acc_107', access_time: '2023-01-15T16:00:00Z', channel_code: '02', status: 'Active', customer_id: 'cust_7', segment_code: 'HNI', product_code: 'P07', login_count: 20, balance: 500000, geo_location: 'DE'}
+        expect:
+          rows:
+            - {access_channel: 'Mobile', suspicious_access: true, high_value_customer: true, account_id: 'acc_107'}
